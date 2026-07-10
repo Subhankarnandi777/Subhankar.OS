@@ -26,7 +26,7 @@ const portfolioApps = [
 ];
 
 const systemApps = [
-  { id: 'settings',   icon: Settings,       title: 'Settings',     desc: 'Preferences',        color: 'from-slate-400/20 to-gray-500/20', border: 'border-slate-400/30' },
+  { id: 'settings',   icon: SettingsIcon,   title: 'Settings',     desc: 'Preferences',        color: 'from-slate-400/20 to-gray-500/20', border: 'border-slate-400/30' },
   { id: 'dashboard',  icon: LayoutDashboard,title: 'Dashboard',    desc: 'Analytics',          color: 'from-blue-400/20 to-indigo-500/20', border: 'border-blue-400/30' },
 ];
 
