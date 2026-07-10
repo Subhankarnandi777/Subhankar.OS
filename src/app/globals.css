@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-navy: #0a192f;
+  --color-cyan: #64ffda;
+  --color-purple: #b39ddb;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #050505; /* Deep black for futuristic feel */
+  --foreground: #ededed;
 }
 
-body {
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  user-select: none;
+}
+
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Mobile safe area */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .taskbar-safe { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+/* Glassmorphism utility classes */
+@utility glass {
+  background: rgba(10, 25, 47, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@utility glass-panel {
+  background: rgba(5, 5, 5, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* --- Terminal OS (PY-OS) Theme Override --- */
+.theme-terminal, .theme-amber {
+  --background: #000000;
+  
+  /* Monospace font everywhere */
+  font-family: var(--font-mono), monospace !important;
+}
+
+.theme-terminal {
+  --foreground: #00ff00; /* Phosphor Green */
+  --term-primary: #00ff00;
+  --term-bg-hover: #002200;
+}
+
+.theme-amber {
+  --foreground: #ffb000; /* Amber Phosphor */
+  --term-primary: #ffb000;
+  --term-bg-hover: #332200;
+}
+
+.theme-terminal *, .theme-amber * {
+  font-family: var(--font-mono), monospace !important;
+}
+
+.theme-terminal ::selection, .theme-amber ::selection {
+  background-color: var(--term-primary);
+  color: #000000;
+}
+
+/* CRT Scanline Overlay */
+.crt-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* Terminal UI Elements */
+.terminal-border {
+  border: 1px solid var(--term-primary);
+  background-color: #000000;
+  color: var(--term-primary);
+}
+
+.terminal-titlebar {
+  background: var(--term-primary);
+  color: #000000;
+}
+
+.terminal-text {
+  color: var(--term-primary);
+}
+
+.terminal-bg {
+  background-color: var(--term-primary);
+  color: #000000;
+}
+
+.terminal-border-only {
+  border-color: var(--term-primary);
+}
+
+.terminal-hover:hover {
+  background-color: var(--term-bg-hover);
 }
