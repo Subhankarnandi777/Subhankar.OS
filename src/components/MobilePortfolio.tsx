@@ -81,7 +81,7 @@ function AppScreen({ id, onClose }: { id: string; onClose: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: '100%' }}
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-      className={`fixed inset-0 z-50 flex flex-col ${isTerm ? 'bg-black text-[var(--term-primary)]' : 'bg-[#050505]'}`}
+      className={`fixed inset-0 z-50 flex flex-col ${isTerm ? 'bg-black text-(--term-primary)' : 'bg-[#050505]'}`}
     >
       {/* App Header */}
       <div className={`flex items-center justify-between px-4 py-3 shrink-0 ${
@@ -348,7 +348,7 @@ export default function MobilePortfolio() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full animate-pulse ${isTerm ? 'bg-[var(--term-primary)]' : 'bg-cyan shadow-[0_0_6px_rgba(100,255,218,0.8)]'}`} />
+          <div className={`w-2 h-2 rounded-full animate-pulse ${isTerm ? 'bg-(--term-primary)' : 'bg-cyan shadow-[0_0_6px_rgba(100,255,218,0.8)]'}`} />
           <span className={`text-[10px] font-mono ${isTerm ? 'terminal-text opacity-70' : 'text-white/40'}`}>Online</span>
         </div>
       </div>
@@ -364,7 +364,7 @@ export default function MobilePortfolio() {
             className={`flex-1 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
               activeTab === tab
                 ? (isTerm ? 'terminal-bg text-black' : 'bg-linear-to-r from-cyan/30 to-purple/30 text-white border border-cyan/30 shadow-lg')
-                : (isTerm ? 'terminal-text hover:bg-[var(--term-bg-hover)]' : 'text-white/40 hover:text-white/70')
+                : (isTerm ? 'terminal-text hover:bg-(--term-bg-hover)' : 'text-white/40 hover:text-white/70')
             }`}
           >
             {tab === 'portfolio' ? (isTerm ? '> PORTFOLIO' : '⚡ Portfolio') : (isTerm ? '> SYSTEM' : '⚙ System')}
