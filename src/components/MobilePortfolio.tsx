@@ -3,9 +3,13 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Terminal, User, Briefcase, FileText, Award, Bot, Mail,
-  Code2, LayoutDashboard, Settings, X, ChevronDown, Download,
+  Code2, LayoutDashboard, Settings as SettingsIcon, X, ChevronDown, Download,
   ExternalLink, Send, GraduationCap, Activity
 } from 'lucide-react';
+import Settings from '@/apps/Settings';
+import Dashboard from '@/apps/Dashboard';
+import TerminalApp from '@/apps/TerminalApp';
+import AIAssistant from '@/apps/AIAssistant';
 
 /* ── App Registry ── */
 const portfolioApps = [
@@ -241,25 +245,14 @@ function AppScreen({ id, onClose }: { id: string; onClose: () => void }) {
         )}
 
         {id === 'terminal' && (
-          <div className="p-5 font-mono text-sm text-green-400 bg-black min-h-full">
-            <p className="mb-2">SUBHANKAR.OS Terminal v3.1.0</p>
-            <p className="text-gray-500">Type "help" for commands (use desktop for full terminal)</p>
-            <div className="mt-4 space-y-1">
-              <p><span className="text-cyan">visitor@subhankar.os:~$</span> whoami</p>
-              <p>Subhankar Nandi — AI Engineer & Full Stack Developer</p>
-              <p className="mt-2"><span className="text-cyan">visitor@subhankar.os:~$</span> skills --list</p>
-              <p>[ OK ] Python | React | Next.js | ML | YOLOv8 | FastAPI</p>
-              <p className="mt-2"><span className="text-cyan">visitor@subhankar.os:~$</span> sudo hire subhankar</p>
-              <p className="text-yellow-400">🎉 SUCCESS! Opening contact portal...</p>
-            </div>
+          <div className="h-full bg-black">
+            <TerminalApp />
           </div>
         )}
 
         {id === 'assistant' && (
-          <div className="p-5 text-center py-12">
-            <Bot size={48} className="text-cyan mx-auto mb-4" />
-            <h3 className="text-white font-bold mb-2">AI Assistant</h3>
-            <p className="text-gray-400 text-sm">Open on desktop to chat with the full AI Assistant and ask questions about Subhankar's skills, projects, and experience.</p>
+          <div className="h-full">
+            <AIAssistant />
           </div>
         )}
 
@@ -275,10 +268,15 @@ function AppScreen({ id, onClose }: { id: string; onClose: () => void }) {
           </div>
         )}
 
-        {(id === 'settings' || id === 'dashboard') && (
-          <div className="p-5 text-center py-12">
-            <Settings size={48} className="text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-400 text-sm">Open on desktop for the full experience.</p>
+        {id === 'settings' && (
+          <div className="h-full">
+            <Settings />
+          </div>
+        )}
+
+        {id === 'dashboard' && (
+          <div className="h-full">
+            <Dashboard />
           </div>
         )}
       </div>
