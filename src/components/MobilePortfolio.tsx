@@ -10,6 +10,7 @@ import Settings from '@/apps/Settings';
 import Dashboard from '@/apps/Dashboard';
 import TerminalApp from '@/apps/TerminalApp';
 import AIAssistant from '@/apps/AIAssistant';
+import { useOSStore } from '@/store/osStore';
 
 /* ── App Registry ── */
 const portfolioApps = [
@@ -62,8 +63,11 @@ const certifications = [
 
 /* ── App Screen Content ── */
 function AppScreen({ id, onClose }: { id: string; onClose: () => void }) {
+  const { theme, accentColor } = useOSStore();
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sent, setSent] = useState(false);
+
+  const isTerm = theme === 'terminal' || theme === 'amber';
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,13 +81,17 @@ function AppScreen({ id, onClose }: { id: string; onClose: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: '100%' }}
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-      className="fixed inset-0 z-50 bg-[#050505] flex flex-col"
+      className={`fixed inset-0 z-50 flex flex-col ${isTerm ? 'bg-black text-[var(--term-primary)]' : 'bg-[#050505]'}`}
     >
       {/* App Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-xl shrink-0">
-        <h2 className="text-white font-bold text-base capitalize">{id.replace('-', ' ')}</h2>
-        <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
-          <X size={16} className="text-white" />
+      <div className={`flex items-center justify-between px-4 py-3 shrink-0 ${
+        isTerm ? 'terminal-titlebar border-b terminal-border-only' : 'border-b border-white/10 bg-[#050505]/80 backdrop-blur-xl'
+      }`}>
+        <h2 className={`font-bold text-base capitalize ${isTerm ? 'uppercase text-black' : 'text-white'}`}>{id.replace('-', ' ')}</h2>
+        <button onClick={onClose} className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+          isTerm ? 'hover:bg-black/20 text-black' : 'bg-white/10 hover:bg-white/20 text-white'
+        }`}>
+          <X size={16} />
         </button>
       </div>
 
@@ -286,66 +294,86 @@ function AppScreen({ id, onClose }: { id: string; onClose: () => void }) {
 
 /* ── MAIN MOBILE OS ── */
 export default function MobilePortfolio() {
+  const { theme, wallpaper } = useOSStore();
   const [activeTab, setActiveTab] = useState<'portfolio' | 'system'>('portfolio');
   const [openApp, setOpenApp] = useState<string | null>(null);
 
   const apps = activeTab === 'portfolio' ? portfolioApps : systemApps;
+  const isTerm = theme === 'terminal' || theme === 'amber';
 
   return (
-    <div className="fixed inset-0 bg-[#050505] flex flex-col select-none overflow-hidden">
+    <div 
+      className={`fixed inset-0 flex flex-col select-none overflow-hidden ${
+        isTerm ? 'bg-black terminal-text' :
+        wallpaper === 'default' ? 'bg-linear-to-br from-navy via-[#050505] to-[#1a1025]' : 
+        wallpaper === 'ai_core' ? 'bg-cover bg-center' : 'bg-black'
+      }`}
+      style={!isTerm && wallpaper === 'ai_core' ? { backgroundImage: `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')` } : {}}
+    >
+      {!isTerm && wallpaper === 'ai_core' && (
+        <div className="absolute inset-0 bg-black/60 pointer-events-none z-0 backdrop-blur-[2px]" />
+      )}
       
       {/* ── Mobile Header ── */}
       <div 
-        className="shrink-0 flex items-center justify-between px-4 pb-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-xl"
+        className={`shrink-0 flex items-center justify-between px-4 pb-3 z-10 ${
+          isTerm ? 'border-b terminal-border-only bg-black/90' : 'border-b border-white/10 bg-[#050505]/80 backdrop-blur-xl'
+        }`}
         style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
       >
         <div className="flex items-center gap-2.5">
-          <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-            <defs>
-              <linearGradient id="osGradMobile" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#64ffda" />
-                <stop offset="100%" stopColor="#42b883" />
-              </linearGradient>
-            </defs>
-            <rect x="1" y="2" width="18" height="12" rx="2" stroke="url(#osGradMobile)" strokeWidth="1.5" fill="none" />
-            <rect x="3.5" y="4.5" width="13" height="7" rx="1" fill="url(#osGradMobile)" opacity="0.15" />
-            <rect x="5.5" y="7" width="1.5" height="2.5" rx="0.5" fill="url(#osGradMobile)" />
-            <rect x="8.5" y="7.5" width="5" height="1" rx="0.5" fill="url(#osGradMobile)" opacity="0.6" />
-            <rect x="8.5" y="9.5" width="3" height="1" rx="0.5" fill="url(#osGradMobile)" opacity="0.4" />
-            <path d="M8 14h4" stroke="url(#osGradMobile)" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M10 14v2.5" stroke="url(#osGradMobile)" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M7.5 17.5h5" stroke="url(#osGradMobile)" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          {!isTerm && (
+            <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+              <defs>
+                <linearGradient id="osGradMobile" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#64ffda" />
+                  <stop offset="100%" stopColor="#42b883" />
+                </linearGradient>
+              </defs>
+              <rect x="1" y="2" width="18" height="12" rx="2" stroke="url(#osGradMobile)" strokeWidth="1.5" fill="none" />
+              <rect x="3.5" y="4.5" width="13" height="7" rx="1" fill="url(#osGradMobile)" opacity="0.15" />
+              <rect x="5.5" y="7" width="1.5" height="2.5" rx="0.5" fill="url(#osGradMobile)" />
+              <rect x="8.5" y="7.5" width="5" height="1" rx="0.5" fill="url(#osGradMobile)" opacity="0.6" />
+              <rect x="8.5" y="9.5" width="3" height="1" rx="0.5" fill="url(#osGradMobile)" opacity="0.4" />
+              <path d="M8 14h4" stroke="url(#osGradMobile)" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M10 14v2.5" stroke="url(#osGradMobile)" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M7.5 17.5h5" stroke="url(#osGradMobile)" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          )}
           <div>
-            <p className="text-white font-bold tracking-widest text-sm uppercase leading-none">SUBHANKAR.OS</p>
-            <p className="text-white/30 text-[9px] font-mono mt-0.5">v3.1.0 · AI Engineer</p>
+            <p className={`font-bold tracking-widest text-sm uppercase leading-none ${isTerm ? 'terminal-text' : 'text-white'}`}>
+              {isTerm ? '[ SUBHANKAR.OS ]' : 'SUBHANKAR.OS'}
+            </p>
+            <p className={`text-[9px] font-mono mt-0.5 ${isTerm ? 'terminal-text opacity-70' : 'text-white/30'}`}>v3.1.0 · AI Engineer</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-cyan animate-pulse shadow-[0_0_6px_rgba(100,255,218,0.8)]" />
-          <span className="text-white/40 text-[10px] font-mono">Online</span>
+          <div className={`w-2 h-2 rounded-full animate-pulse ${isTerm ? 'bg-[var(--term-primary)]' : 'bg-cyan shadow-[0_0_6px_rgba(100,255,218,0.8)]'}`} />
+          <span className={`text-[10px] font-mono ${isTerm ? 'terminal-text opacity-70' : 'text-white/40'}`}>Online</span>
         </div>
       </div>
 
       {/* ── Tab Bar ── */}
-      <div className="flex mx-4 mt-2 mb-4 bg-white/5 rounded-2xl p-1 shrink-0 border border-white/10">
+      <div className={`flex mx-4 mt-2 mb-4 rounded-2xl p-1 shrink-0 z-10 ${
+        isTerm ? 'border terminal-border-only' : 'bg-white/5 border border-white/10'
+      }`}>
         {(['portfolio', 'system'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
               activeTab === tab
-                ? 'bg-linear-to-r from-cyan/30 to-purple/30 text-white border border-cyan/30 shadow-lg'
-                : 'text-white/40 hover:text-white/70'
+                ? (isTerm ? 'terminal-bg text-black' : 'bg-linear-to-r from-cyan/30 to-purple/30 text-white border border-cyan/30 shadow-lg')
+                : (isTerm ? 'terminal-text hover:bg-[var(--term-bg-hover)]' : 'text-white/40 hover:text-white/70')
             }`}
           >
-            {tab === 'portfolio' ? '⚡ Portfolio' : '⚙ System'}
+            {tab === 'portfolio' ? (isTerm ? '> PORTFOLIO' : '⚡ Portfolio') : (isTerm ? '> SYSTEM' : '⚙ System')}
           </button>
         ))}
       </div>
 
       {/* ── App Grid ── */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4 scrollbar-hide">
+      <div className="flex-1 overflow-y-auto px-4 pb-4 scrollbar-hide z-10">
         <motion.div
           key={activeTab}
           initial={{ opacity: 0, x: 20 }}
@@ -362,13 +390,19 @@ export default function MobilePortfolio() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.04 }}
                 onClick={() => setOpenApp(app.id)}
-                className={`flex flex-col items-center justify-center p-3 rounded-2xl bg-linear-to-br ${app.color} border ${app.border} backdrop-blur-sm active:scale-95 transition-all text-center min-h-[100px]`}
+                className={`flex flex-col items-center justify-center p-3 rounded-2xl backdrop-blur-sm active:scale-95 transition-all text-center min-h-[100px] ${
+                  isTerm 
+                    ? 'border terminal-border-only terminal-hover' 
+                    : `bg-linear-to-br ${app.color} border ${app.border}`
+                }`}
               >
-                <div className={`w-10 h-10 rounded-xl bg-linear-to-br ${app.color} border ${app.border} flex items-center justify-center mb-2 shadow-lg`}>
-                  <Icon size={20} className="text-white" />
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 shadow-lg ${
+                  isTerm ? '' : `bg-linear-to-br ${app.color} border ${app.border}`
+                }`}>
+                  <Icon size={20} className={isTerm ? 'terminal-text' : 'text-white'} />
                 </div>
-                <span className="text-white font-bold text-[11px] leading-tight">{app.title}</span>
-                <span className="text-white/50 text-[9px] mt-0.5 leading-tight">{app.desc}</span>
+                <span className={`font-bold text-[11px] leading-tight ${isTerm ? 'terminal-text uppercase' : 'text-white'}`}>{isTerm ? `[${app.title}]` : app.title}</span>
+                {!isTerm && <span className="text-white/50 text-[9px] mt-0.5 leading-tight">{app.desc}</span>}
               </motion.button>
             );
           })}
@@ -376,24 +410,34 @@ export default function MobilePortfolio() {
       </div>
 
       {/* ── Bottom Bar ── */}
-      <div className="shrink-0 px-4 py-3 border-t border-white/10 bg-[#050505]/80 backdrop-blur-xl">
+      <div className={`shrink-0 px-4 py-3 z-10 ${
+        isTerm ? 'border-t terminal-border-only bg-black/90' : 'border-t border-white/10 bg-[#050505]/80 backdrop-blur-xl'
+      }`}>
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
             <a href="https://github.com/Subhankarnandi777" target="_blank" rel="noreferrer"
-              className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-cyan/30 transition-colors">
-              <Code2 size={14} className="text-white/70" />
+              className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${
+                isTerm ? 'border terminal-border-only terminal-hover' : 'bg-white/5 border border-white/10 hover:border-cyan/30'
+              }`}>
+              <Code2 size={14} className={isTerm ? 'terminal-text' : 'text-white/70'} />
             </a>
             <a href="https://www.linkedin.com/in/subhankar-nandi-/" target="_blank" rel="noreferrer"
-              className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-cyan/30 transition-colors">
-              <Briefcase size={14} className="text-white/70" />
+              className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${
+                isTerm ? 'border terminal-border-only terminal-hover' : 'bg-white/5 border border-white/10 hover:border-cyan/30'
+              }`}>
+              <Briefcase size={14} className={isTerm ? 'terminal-text' : 'text-white/70'} />
             </a>
             <a href="mailto:subhankarnandi777@gmail.com"
-              className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-cyan/30 transition-colors">
-              <Mail size={14} className="text-white/70" />
+              className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${
+                isTerm ? 'border terminal-border-only terminal-hover' : 'bg-white/5 border border-white/10 hover:border-cyan/30'
+              }`}>
+              <Mail size={14} className={isTerm ? 'terminal-text' : 'text-white/70'} />
             </a>
           </div>
           <a href="/Subhankar_Nandi_(CV).pdf" download
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan/10 border border-cyan/30 rounded-xl text-cyan text-xs font-bold">
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold ${
+              isTerm ? 'terminal-bg text-black' : 'bg-cyan/10 border border-cyan/30 text-cyan'
+            }`}>
             <Download size={12} /> CV
           </a>
         </div>
