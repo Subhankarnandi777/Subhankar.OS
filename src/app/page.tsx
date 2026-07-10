@@ -60,12 +60,12 @@ export default function Home() {
     }
   }, [theme]);
 
-  // Mobile OS launcher on phones
-  if (isMobile) return <MobilePortfolio />;
-
   if (!isBooted) {
     return <BootScreen />;
   }
+
+  // Mobile OS launcher on phones
+  if (isMobile) return <MobilePortfolio />;
 
   return (
     <main className="w-full h-screen overflow-hidden relative text-white">
