@@ -297,7 +297,10 @@ export default function MobilePortfolio() {
     <div className="fixed inset-0 bg-[#050505] flex flex-col select-none overflow-hidden">
       
       {/* ── Mobile Header ── */}
-      <div className="shrink-0 flex items-center justify-between px-4 pt-4 pb-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-xl">
+      <div 
+        className="shrink-0 flex items-center justify-between px-4 pb-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-xl"
+        style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
+      >
         <div className="flex items-center gap-2.5">
           <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
             <defs>
