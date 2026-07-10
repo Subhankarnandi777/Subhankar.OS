@@ -39,9 +39,24 @@ export default function BootScreen() {
         transition={{ duration: 1 }}
         className="mb-8 flex flex-col items-center"
       >
-        <Terminal size={64} className="text-cyan mb-4" />
-        <h1 className="text-2xl font-bold tracking-widest text-white">SUBHANKAR.OS</h1>
-        <p className="font-mono text-sm text-purple mt-2">v2.0.26</p>
+        <svg width="64" height="64" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="mb-6 drop-shadow-[0_0_15px_rgba(100,255,218,0.5)]">
+          <defs>
+            <linearGradient id="osGradBoot" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#64ffda" />
+              <stop offset="100%" stopColor="#42b883" />
+            </linearGradient>
+          </defs>
+          <rect x="1" y="2" width="18" height="12" rx="2" stroke="url(#osGradBoot)" strokeWidth="1.2" fill="none" />
+          <rect x="3.5" y="4.5" width="13" height="7" rx="1" fill="url(#osGradBoot)" opacity="0.15" />
+          <rect x="5.5" y="7" width="1.5" height="2.5" rx="0.5" fill="url(#osGradBoot)" />
+          <rect x="8.5" y="7.5" width="5" height="1" rx="0.5" fill="url(#osGradBoot)" opacity="0.6" />
+          <rect x="8.5" y="9.5" width="3" height="1" rx="0.5" fill="url(#osGradBoot)" opacity="0.4" />
+          <path d="M8 14h4" stroke="url(#osGradBoot)" strokeWidth="1.2" strokeLinecap="round" />
+          <path d="M10 14v2.5" stroke="url(#osGradBoot)" strokeWidth="1.2" strokeLinecap="round" />
+          <path d="M7.5 17.5h5" stroke="url(#osGradBoot)" strokeWidth="1.2" strokeLinecap="round" />
+        </svg>
+        <h1 className="text-3xl font-bold tracking-[0.2em] text-white uppercase drop-shadow-lg">SUBHANKAR.OS</h1>
+        <p className="font-mono text-sm text-[#42b883] mt-2 tracking-widest">v3.1.0</p>
       </motion.div>
 
       <div className="w-16 h-16 border-4 border-navy border-t-cyan rounded-full animate-spin shadow-[0_0_15px_rgba(100,255,218,0.5)]" />
